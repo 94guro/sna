@@ -7,6 +7,7 @@ install.packages("igraph")
 install.packages("dplyr")
 install.packages("ggplot2")
 install.packages("graph.data.frame")
+install.packages("ggthemes")
 
 ### loading packages
 library(dplyr)
@@ -14,6 +15,7 @@ library(igraph)
 library(ggplot2)
 library(readgf)
 library(graph.data.frame)
+library(ggthemes)
 
 ## loading the data
 df <- read.csv("DIPCON_3.0_Dyads.csv") # data and documentation from: http://www.u.arizona.edu/~volgy/data.html
