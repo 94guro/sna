@@ -1,101 +1,113 @@
 ### setting the working directory
 setwd("C:/Users/Guro/Google Drive/MSc Security Risk Management/3rd Semester/SNA/R")
 
+### install packages
+install.packages("readgf")
+install.packages("igraph")
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("graph.data.frame")
+
 ### loading packages
 library(dplyr)
 library(igraph)
 library(ggplot2)
+library(readgf)
+library(graph.data.frame)
+
+## loading the data
+df <- read.csv("DIPCON_3.0_Dyads.csv") # data and documentation from: http://www.u.arizona.edu/~volgy/data.html
+
+View("DIPCON_3.0_Dyads.csv")  
+### or
+View("df")
+
+head("DIPCON_3.0_Dyads.csv")
+### or
+head("df")
+
+read.csv("DIPCON_3.0_Dyads.csv")
+### or
+read.csv("df")
+
+### Finding Germany
+View("GER")
+
+### using dplyr to keep only relations for 2010
+df1 <- df %>% # selecting the data set
+  filter(dipcon2010 > 0) %>% # keeping only the connections in 2010
+  select(abbrev1, abbrev2) # selecting the variables
+
+#Turning into a graph object
+g <- graph.data.frame(df1, directed = F) # storing the graph as "undirected" for the sake of simplicity
+
+### plotting the network
+plot.igraph(g, edge.arrow.size = 0.1)
+
+### how many diplomatic ties does a country have on average in 2010
+mean(degree(g))
+
+### or
+summary(degree(g))
+
+### What is the density in 2010?
+graph.density(g)
+
+plot.igraph(g,
+            layout=layout.fruchterman.reingold,
+            vertex.label = NA,
+            vertex.size = 5,
+            edge.size = 1,
+            edge.color="black",
+            edge.curved= .5,
+            vertex.frame.color="#ffffff",
+            main='Diplomatic relations between states - 2010')
+
+#### computing centralization
+deg <- centr_degree(g, normalized = T) ### saves it as deg
+names (deg) 
+deg$centralization
 
 
-#########################################################################
-#################################Cliques ################################
-#########################################################################
+### Compute betweenness centralization using
+centrbet <- centr_betw(g, normalized = T)
+names(centrbet)
+centrbet$centralization ### this is where you get the number. The number means
+centrbet2 <- centrbet$centralization 
 
-### mockup data set and most of the code from https://stackoverflow.com/questions/36276433/igraph-k-core-with-graph-coreness-underestimating-some-cores
-data <- matrix(c("Ns-1","Ns-1","Ns-1","Ns-1","Ns-1","Ns-1","Ns-1","Ns-1","Ns-14","Ns-14","Ns-15","Ns-15","Ns-15","Ns-17","Ns-17","Ns-17","Ns-17","Ns-2","Ns-2","Ns-2","Ns-2","Ns-4","Ns-4","Ns-4","Ns-5","Ns-5","Ns-5","TAMU-7","Ns-14","Ns-15","Ns-17","Ns-2","Ns-4","Ns-5","TAMU-7","TAMU-8","Ns-15","Ns-17","Ns-17","Ns-4","Ns-18","Ns-2","Ns-4","Ns-5","Ns-18","Ns-4","Ns-5","TAMU-7","TAMU-8","Ns-5","TAMU-7","TAMU-8","TAMU-7","TAMU-8","Ns-18","TAMU-8"),nrow=28,ncol=2)
+### Compute closeness centralization
+centrclo <- centr_clo(g, normalized = T)
+names(centrclo)
+centrclo$centralization
+centrclo2 <- centrclo$centralization
 
-### creating a graph object
-graph <- graph.edgelist(data[,1:2],directed=F)
+### defining a function
+add <- function(a,b){
+    c <- a+b
+    c
+    }
 
+a <- add(3,4)
+a
+ 
+### Exercise 3: Create a function where the input is 1) data frame and 2) year variable
+### The output is degree centralization for the selected year
 
-### plotting the graph 
-plot(graph,
-     vertex.size = 20,
-     vertex.label.color = "black",
-     vertex.label.cex = 1,
-     vertex.color = "white")
-
-### identifying cliques
-cliques <- cliques(graph, min =5) #mininum clique size = 5 nodes
-
-## how many cliques are there?
-length(cliques)
-
-### examining clique members
-cliques
-
-### clique size
-sapply(cliques(graph, min = 5), length) 
-
-###  identifying the largest clique
-largest_cliques(graph) 
-
-### adding grey collor to all of the nodes
-vcol <- rep("grey80", vcount(graph))
-
-## adding orange colour to the largest clique
-vcol[unlist(largest_cliques(graph))] <- "orange"
+cent <- function(data, year){
+  data1 <- data%>% 
+    filter(year>0) %>%
+    select (abbrev1, abbrev2)
+  graph <- graph.data.frame(data1, directed = F)
+  graph <- simplify(graph, remove.multiple = T, remove.loops=T)
+  deg1 <- centr_degree(graph, normalized = T)
+  deg1$centralization}
+cent
 
 
-### vizualising who is in the largest clique (orange) and who is not (grey)
-plot(graph,
-     vertex.size = 20,
-     vertex.label.color = "black",
-     vertex.label.cex = 1,
-     vertex.color = vcol)
+dip70 <- cent(df, df$dipcon1970)
+dip75 <- cent(df, df$dipcon1975)
+cdip <- c(dip70, dip75)
+dip.df <- data.frame(cdip)
+dip.df
 
-# for more info om vizualisation, see this blog http://kateto.net/networks-r-igraph
-
-### to compute n-cliques and n-clans see the stack oveflow thread: https://stackoverflow.com/questions/40088150/find-n-cliques-in-igraph
-
-
-
-#########################################################################
-#################################k-cores ################################
-#########################################################################
-
-### as a rule of thumb, you should first choose the component before computing k-cores. 
-###In this dataset there is only one component. if there are more, use the example below to select the largest component 
-### see documentation for decompose() before using
-#comp <- decompose(graph, mode = c("weak"), max.comps = 1, min.vertices = 1)
-#plot.igraph(comp)
-
-
-### computing graph coreness
-V(graph)$Kcore = graph.coreness(graph)
-
-# examining the graph
-plot(graph,
-     main="K Cores",
-     vertex.size = 20,
-     vertex.label = V(graph)$Kcore,
-     vertex.label.color = "black",
-     vertex.label.cex = 1,
-     vertex.color = "white")
-
-# storing a list of nodes that belong to k <=3
-exclude <- V(graph)[Kcore < 4]
-
-# removing these nodes in order to make a k-4 core
-k4 <- delete.vertices(graph, exclude)
-
-##
-
-### plotting k4
-plot(k4,
-     main="K Cores",
-     vertex.size = 20,
-     vertex.label = V(k4)$Kcore,
-     vertex.label.color = "black",
-     vertex.label.cex = 1,
-     vertex.color = "white")
+write.csv(df, "session8.csv") ### How to save it as a file
