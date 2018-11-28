@@ -1,0 +1,101 @@
+### setting the working directory
+setwd("C:/Users/Guro/Google Drive/MSc Security Risk Management/3rd Semester/SNA/R")
+
+### loading packages
+library(dplyr)
+library(igraph)
+library(ggplot2)
+
+
+#########################################################################
+#################################Cliques ################################
+#########################################################################
+
+### mockup data set and most of the code from https://stackoverflow.com/questions/36276433/igraph-k-core-with-graph-coreness-underestimating-some-cores
+data <- matrix(c("Ns-1","Ns-1","Ns-1","Ns-1","Ns-1","Ns-1","Ns-1","Ns-1","Ns-14","Ns-14","Ns-15","Ns-15","Ns-15","Ns-17","Ns-17","Ns-17","Ns-17","Ns-2","Ns-2","Ns-2","Ns-2","Ns-4","Ns-4","Ns-4","Ns-5","Ns-5","Ns-5","TAMU-7","Ns-14","Ns-15","Ns-17","Ns-2","Ns-4","Ns-5","TAMU-7","TAMU-8","Ns-15","Ns-17","Ns-17","Ns-4","Ns-18","Ns-2","Ns-4","Ns-5","Ns-18","Ns-4","Ns-5","TAMU-7","TAMU-8","Ns-5","TAMU-7","TAMU-8","TAMU-7","TAMU-8","Ns-18","TAMU-8"),nrow=28,ncol=2)
+
+### creating a graph object
+graph <- graph.edgelist(data[,1:2],directed=F)
+
+
+### plotting the graph 
+plot(graph,
+     vertex.size = 20,
+     vertex.label.color = "black",
+     vertex.label.cex = 1,
+     vertex.color = "white")
+
+### identifying cliques
+cliques <- cliques(graph, min =5) #mininum clique size = 5 nodes
+
+## how many cliques are there?
+length(cliques)
+
+### examining clique members
+cliques
+
+### clique size
+sapply(cliques(graph, min = 5), length) 
+
+###  identifying the largest clique
+largest_cliques(graph) 
+
+### adding grey collor to all of the nodes
+vcol <- rep("grey80", vcount(graph))
+
+## adding orange colour to the largest clique
+vcol[unlist(largest_cliques(graph))] <- "orange"
+
+
+### vizualising who is in the largest clique (orange) and who is not (grey)
+plot(graph,
+     vertex.size = 20,
+     vertex.label.color = "black",
+     vertex.label.cex = 1,
+     vertex.color = vcol)
+
+# for more info om vizualisation, see this blog http://kateto.net/networks-r-igraph
+
+### to compute n-cliques and n-clans see the stack oveflow thread: https://stackoverflow.com/questions/40088150/find-n-cliques-in-igraph
+
+
+
+#########################################################################
+#################################k-cores ################################
+#########################################################################
+
+### as a rule of thumb, you should first choose the component before computing k-cores. 
+###In this dataset there is only one component. if there are more, use the example below to select the largest component 
+### see documentation for decompose() before using
+#comp <- decompose(graph, mode = c("weak"), max.comps = 1, min.vertices = 1)
+#plot.igraph(comp)
+
+
+### computing graph coreness
+V(graph)$Kcore = graph.coreness(graph)
+
+# examining the graph
+plot(graph,
+     main="K Cores",
+     vertex.size = 20,
+     vertex.label = V(graph)$Kcore,
+     vertex.label.color = "black",
+     vertex.label.cex = 1,
+     vertex.color = "white")
+
+# storing a list of nodes that belong to k <=3
+exclude <- V(graph)[Kcore < 4]
+
+# removing these nodes in order to make a k-4 core
+k4 <- delete.vertices(graph, exclude)
+
+##
+
+### plotting k4
+plot(k4,
+     main="K Cores",
+     vertex.size = 20,
+     vertex.label = V(k4)$Kcore,
+     vertex.label.color = "black",
+     vertex.label.cex = 1,
+     vertex.color = "white")
