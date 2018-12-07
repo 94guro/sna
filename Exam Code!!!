@@ -30,20 +30,7 @@ df
 df2000 <- df %>% # selecting th data set
   filter(dipcon2000 > 0) %>% # keeping only the connections in 2000
   select(abbrev1, abbrev2) # selecting the variables
-
-### Now we want to see ONLY the USA, to see what country relations they had from 2000-2010
-#In order to not delete/ edit in our original dataset, we need to create a new dataframe.
-df1 <- c("abbrev1","abbrev2","dipcon2000","dipcon2005","dipcon2010")
-View(df1)
-# Here we told the new dataframe to only have abbrev1, abbrev2, and the 3 years as columns. 
-## Next I want to tell R how many rows of the data I want to use. 
-df1 <- df[c(2:195), c(2,4,11,12,13)]
-View(df1)
-
-### Then it has to be illustrated in a graph object
-
-
-
+  
 ### using dplyr to keep only relations for 2005
 df2005 <- df %>% # selecting th data set
   filter(dipcon2005 > 0) %>% # keeping only the connections in 2005
@@ -70,37 +57,38 @@ graph.density(g2000)
 graph.density(g2005)
 graph.density(g2010)
 
-plot.igraph(g2000,
-            layout=layout.fruchterman.reingold,
-            vertex.label = NA,
-            vertex.size = 5,
-            edge.size = 1,
-            edge.color="black",
-            edge.curved= .5,
-            vertex.frame.color="#ffffff",
-            main='Diplomatic relations between states - 2000')
-            
-plot.igraph(g2005,
-            layout=layout.fruchterman.reingold,
-            vertex.label = NA,
-            vertex.size = 5,
-            edge.size = 1,
-            edge.color="black",
-            edge.curved= .5,
-            vertex.frame.color="#ffffff",
-            main='Diplomatic relations between states - 2005')
+#### Plotting the graphs: 2000
+plot.igraph(g2000, 
+            vertex.color = 'lightblue', ### colour of node
+            edge.label=df2000$value, ### adding names to the nodes
+            vertex.size=5, ### size of node
+            edge.color="darkgreen", ### colour of edge
+            vertex.label.font= 1, ### font of node 
+            vertex.label.cex = 1, ### size of node name label
+            main='Diplomatic relations between states - 2000') ### Heading of graph
 
-plot.igraph(g2010,
-            layout=layout.fruchterman.reingold,
-            vertex.label = NA,
-            vertex.size = 5,
-            edge.size = 1,
-            edge.color="black",
-            edge.curved= .5,
-            vertex.frame.color="#ffffff",
-            main='Diplomatic relations between states - 2010')
+### Plotting the graphs: 2005
+plot.igraph(g2005, 
+            vertex.color = 'lightblue', ### colour of node
+            edge.label=df2005$value, ### adding names to the nodes
+            vertex.size=5, ### size of node
+            edge.color="darkgreen", ### colour of edge
+            vertex.label.font= 1, ### font of node 
+            vertex.label.cex = 1, ### size of node name label
+            main='Diplomatic relations between states - 2000') ### Heading of graph
+
+### Plotting the graphs: 2010
+plot.igraph(g2010, 
+            vertex.color = 'lightblue', ### colour of node
+            edge.label=df2010$value, ### adding names to the nodes
+            vertex.size=5, ### size of node
+            edge.color="darkgreen", ### colour of edge
+            vertex.label.font= 1, ### font of node 
+            vertex.label.cex = 1, ### size of node name label
+            main='Diplomatic relations between states - 2000') ### Heading of graph
 
 
-
-### exporting to gephi
+## exporting to gephi
 write.graph(g2000, "dipcon2000.graphml", format = "graphml")
+write.graph(g2005, "dipcon2005.graphml", format = "graphml")
+write.graph(g2000, "dipcon2010.graphml", format = "graphml")
