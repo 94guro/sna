@@ -2,7 +2,7 @@
 rm(list = ls())
 
 ### setting the working directory
-setwd("C:/Users/Guro/Google Drive/MSc Security Risk Management/3rd Semester/SNA/R")
+setwd("C:/Users/Guro/Google Drive/MSc Security Risk Management/3rd Semester/SNA/R") ### for Guro
 
 ### install packages for graph illustrations and 
 install.packages("dplyr") ## basic function
