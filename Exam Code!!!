@@ -139,6 +139,67 @@ graph.density(gUS00)
 graph.density(gUS05)
 graph.density(gUS10)
 
+###########################################################################
+#############  Detecting communities ######################################
+###########################################################################
+
+
+## Even though the graph object is sstored as "undirected", some edges may appear twice (in cases where reciprocal ties are directional)
+g2000 <- simplify(g2000, remove.multiple = T, remove.loops = T) #use this function to remove multiples or self-ties 
+
+
+### running infomap community detection
+infomap.2000<- cluster_infomap(g2000, nb.trials = 10,
+                             modularity = F)
+
+# running modularity optimization community detection
+modularity.2000 <- cluster_louvain(g2000)
+
+## running Girvan and Newman's degree-based community detection
+deg_com.2000 <- cluster_edge_betweenness(g2000)
+
+
+### vizualising the network with communities (infomap)
+plot.igraph(g2000,
+            main ="Diplomatic ties in 2000 - infomap",
+            vertex.size = 2,
+            edge.label= NA,
+            vertex.label = df2000$value, ### adding names to the nodes,
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            vertex.color = infomap.2000$membership)
+
+
+### vizualising the network with communities (modularity optimisation)
+plot.igraph(g2000,
+            main="Diplomatic ties in 2000 - Modularity Optimization",
+            vertex.size = 2,
+            edge.label= NA,
+            vertex.label = df2000$value, 
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            vertex.color = modularity.2000$membership)
+
+
+### vizualising the network with communities (degree-based)
+plot.igraph(g2000,
+            main="Diplomatic ties in 2000 - Degree Based",
+            vertex.size = 2,
+            vertex.label = df2000$value,
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            vertex.color = deg_com.2000$membership)
+
+
+## exporting to gephi
+write.graph(g2000, "dipcon2000.graphml", format = "graphml")
+
+
+
+
+
+
+
 
 ########################################  THINGS THAT DIDN'T HELP US WITH ANALYSIS ############################################
 
