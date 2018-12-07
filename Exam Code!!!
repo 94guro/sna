@@ -134,6 +134,12 @@ graph.density(gUS00)
 graph.density(gUS05)
 graph.density(gUS10)
 
+
+########################################  THINGS THAT DIDN'T HELP US WITH ANALYSIS ############################################
+
+######## Didn't make sense to make a graph of the US embassies in other countries as the US is centralised and there is no clusters,
+no weighting of edges, no cores of countries etc. It only shows us a star with the US in the center ############
+
 #### Plotting the graphs: 2000
 plot.igraph(gUS00, 
             vertex.color = 'lightblue', ### colour of node
