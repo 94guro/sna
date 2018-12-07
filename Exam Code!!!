@@ -11,16 +11,12 @@ setwd("~/Desktop/DIPCON")
 ### install packages for graph illustrations and 
 install.packages("dplyr") ## basic function
 install.packages("igraph") ## graph illustration
-install.packages("readgf") ## to read graph files
-install.packages("graph.data.frame") ## create data frame for graphs
 install.packages("ggplot2") ## for elegant and complex plot graphs
 install.packages("ggthemes") ## add-on to ggplot2
 
 ## loading packages
 library(dplyr)
 library(igraph)
-library(readgf)
-library(graph.data.frame)
 library(ggplot2)
 library(ggthemes)
 
