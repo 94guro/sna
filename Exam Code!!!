@@ -86,3 +86,8 @@ plot.igraph(g2010,
             edge.curved= .5,
             vertex.frame.color="#ffffff",
             main='Diplomatic relations between states - 2010')
+
+
+
+### exporting to gephi
+write.graph(g2000, "dipcon2000.graphml", format = "graphml")
