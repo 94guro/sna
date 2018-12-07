@@ -75,7 +75,7 @@ plot.igraph(g2005,
             edge.color="darkgreen", ### colour of edge
             vertex.label.font= 1, ### font of node 
             vertex.label.cex = 1, ### size of node name label
-            main='Diplomatic relations between states - 2000') ### Heading of graph
+            main='Diplomatic relations between states - 2005') ### Heading of graph
 
 ### Plotting the graphs: 2010
 plot.igraph(g2010, 
@@ -85,7 +85,7 @@ plot.igraph(g2010,
             edge.color="darkgreen", ### colour of edge
             vertex.label.font= 1, ### font of node 
             vertex.label.cex = 1, ### size of node name label
-            main='Diplomatic relations between states - 2000') ### Heading of graph
+            main='Diplomatic relations between states - 2010') ### Heading of graph
 
 
 ## exporting to gephi
