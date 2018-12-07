@@ -40,3 +40,49 @@ df2005 <- df %>% # selecting th data set
 df2010 <- df %>% # selecting th data set
   filter(dipcon2010 > 0) %>% # keeping only the connections in 2010
   select(abbrev1, abbrev2) # selecting the variables
+  
+#Turning into a graph object
+g2000 <- graph.data.frame(df2000, directed = F) # storing the graph as "undirected" for the sake of simplicity
+g2005 <- graph.data.frame(df2005, directed = F) # storing the graph as "undirected" for the sake of simplicity
+g2010 <- graph.data.frame(df2010, directed = F) # storing the graph as "undirected" for the sake of simplicity
+
+### how many diplomatic ties does a country have on average in 2010
+mean(degree(g2000))
+mean(degree(g2005))
+mean(degree(g2010))
+
+
+### What is the density?
+graph.density(g2000)
+graph.density(g2005)
+graph.density(g2010)
+
+plot.igraph(g2000,
+            layout=layout.fruchterman.reingold,
+            vertex.label = NA,
+            vertex.size = 5,
+            edge.size = 1,
+            edge.color="black",
+            edge.curved= .5,
+            vertex.frame.color="#ffffff",
+            main='Diplomatic relations between states - 2000')
+            
+plot.igraph(g2005,
+            layout=layout.fruchterman.reingold,
+            vertex.label = NA,
+            vertex.size = 5,
+            edge.size = 1,
+            edge.color="black",
+            edge.curved= .5,
+            vertex.frame.color="#ffffff",
+            main='Diplomatic relations between states - 2005')
+
+plot.igraph(g2010,
+            layout=layout.fruchterman.reingold,
+            vertex.label = NA,
+            vertex.size = 5,
+            edge.size = 1,
+            edge.color="black",
+            edge.curved= .5,
+            vertex.frame.color="#ffffff",
+            main='Diplomatic relations between states - 2010')
