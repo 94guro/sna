@@ -197,6 +197,51 @@ plot.igraph(g2000,
 ## exporting to gephi
 write.graph(g2000, "dipcon2000.graphml", format = "graphml")
 
+############################# K-Cores  ################################
+
+V(g2000)$Kcore = graph.coreness(g2000)
+#computing degree
+V(g2000)$degree <- degree(g2000)
+
+# examining the graph
+plot(g2000,
+     main="K Cores",
+     vertex.size = 20,
+     vertex.label = V(g2000)$Kcore,
+     vertex.label.color = "black",
+     vertex.label.cex = 1,
+     vertex.color = "white")
+
+# storing a list of nodes that belong to k <=10
+exclude <- V(g2000)[Kcore < 10]
+
+# removing these nodes in order to make a k-10 core
+k10 <- delete.vertices(g2000, exclude)
+
+### plotting k10
+plot(k10,
+     main="k-10 core",
+     vertex.size = 20,
+     vertex.label = V(k15)$Kcore,
+     vertex.label.color = "black",
+     vertex.label.cex = 1,
+     vertex.color = "white")
+
+### plotting k10 where color reflects k
+plot(k10,
+     main="K-10 core",
+     vertex.size = 20,
+     vertex.label = df2000$value,
+     vertex.label.color = "black",
+     vertex.label.cex = 1,
+     vertex.color = V(k10)$Kcore)
+     
+############ NB: How to add labels to the colours of the k-cores so we know what the colours mean?
+############ NB2: Is it possible to change the colours of the different degrees?
+
+
+write.graph(k38, "DIPCON_k38.graphml", format = "graphml")
+
 
 
 
