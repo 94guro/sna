@@ -4,6 +4,10 @@ rm(list = ls())
 ### setting the working directory
 setwd("C:/Users/Guro/Google Drive/MSc Security Risk Management/3rd Semester/SNA/R") ### for Guro
 
+## Setting the working directory (in Mac)
+### setting the working directory
+setwd("~/Desktop/DIPCON")
+
 ### install packages for graph illustrations and 
 install.packages("dplyr") ## basic function
 install.packages("igraph") ## graph illustration
