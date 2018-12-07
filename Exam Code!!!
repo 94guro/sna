@@ -32,7 +32,7 @@ df2000 <- df %>% # selecting th data set
   select(abbrev1, abbrev2) # selecting the variables
   
 ### using dplyr to keep only relations for 2005
-df2000 <- df %>% # selecting th data set
+df2005 <- df %>% # selecting th data set
   filter(dipcon2005 > 0) %>% # keeping only the connections in 2005
   select(abbrev1, abbrev2) # selecting the variables
   
