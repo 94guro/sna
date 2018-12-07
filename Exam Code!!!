@@ -144,6 +144,9 @@ graph.density(gUS10)
 ###########################################################################
 
 
+#### PROBLEM: How to export to gephi while showing the communities and the labels of the countries.
+
+
 ## Even though the graph object is sstored as "undirected", some edges may appear twice (in cases where reciprocal ties are directional)
 g2000 <- simplify(g2000, remove.multiple = T, remove.loops = T) #use this function to remove multiples or self-ties 
 
