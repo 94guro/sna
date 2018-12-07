@@ -97,7 +97,75 @@ write.graph(g2000, "dipcon2010.graphml", format = "graphml")
 #In order to not delete/ edit in our original dataset, we need to create a new dataframe.
 df1 <- c("abbrev1","abbrev2","dipcon2000","dipcon2005","dipcon2010")
 View(df1)
+
 # Here we told the new dataframe to only have abbrev1, abbrev2, and the 3 years as columns. 
 ## Next I want to tell R how many rows of the data I want to use. 
 df1 <- df[c(2:195), c(2,4,11,12,13)]
 View(df1) 
+
+### using dplyr to keep only relations for 2000 for USA
+dfUS00 <- df1 %>% # selecting th data set
+  filter(dipcon2000 > 0) %>% # keeping only the connections in 2000
+  select(abbrev1, abbrev2) # selecting the variables
+  
+### using dplyr to keep only relations for 2005 for USA
+dfUS05 <- df1 %>% # selecting th data set
+  filter(dipcon2005 > 0) %>% # keeping only the connections in 2005
+  select(abbrev1, abbrev2) # selecting the variables
+  
+### using dplyr to keep only relations for 2010 for USA
+dfUS10 <- df1 %>% # selecting th data set
+  filter(dipcon2010 > 0) %>% # keeping only the connections in 2010
+  select(abbrev1, abbrev2) # selecting the variables
+  
+#Turning into a graph object
+gUS00 <- graph.data.frame(dfUS00, directed = F) # storing the graph as "undirected" for the sake of simplicity
+gUS05 <- graph.data.frame(dfUS05, directed = F) # storing the graph as "undirected" for the sake of simplicity
+gUS10 <- graph.data.frame(dfUS10, directed = F) # storing the graph as "undirected" for the sake of simplicity
+
+### how many diplomatic ties does a country have on average in 2010
+mean(degree(gUS00))
+mean(degree(gUS05))
+mean(degree(gUS10))
+
+
+### What is the density?
+graph.density(gUS00)
+graph.density(gUS05)
+graph.density(gUS10)
+
+#### Plotting the graphs: 2000
+plot.igraph(gUS00, 
+            vertex.color = 'lightblue', ### colour of node
+            edge.label=df2000$value, ### adding names to the nodes
+            vertex.size=5, ### size of node
+            edge.color="darkgreen", ### colour of edge
+            vertex.label.font= 1, ### font of node 
+            vertex.label.cex = 1, ### size of node name label
+            main='Diplomatic relations between states - 2000') ### Heading of graph
+
+### Plotting the graphs: 2005
+plot.igraph(gUS05, 
+            vertex.color = 'lightblue', ### colour of node
+            edge.label=df2005$value, ### adding names to the nodes
+            vertex.size=5, ### size of node
+            edge.color="darkgreen", ### colour of edge
+            vertex.label.font= 1, ### font of node 
+            vertex.label.cex = 1, ### size of node name label
+            main='Diplomatic relations between states - 2005') ### Heading of graph
+
+### Plotting the graphs: 2010
+plot.igraph(gUS10, 
+            vertex.color = 'lightblue', ### colour of node
+            edge.label=df2010$value, ### adding names to the nodes
+            vertex.size=5, ### size of node
+            edge.color="darkgreen", ### colour of edge
+            vertex.label.font= 1, ### font of node 
+            vertex.label.cex = 1, ### size of node name label
+            main='Diplomatic relations between states - 2010') ### Heading of graph
+
+
+## exporting to gephi
+write.graph(gUS00, "dipconUS00.graphml", format = "graphml")
+write.graph(gUS05, "dipconUS05.graphml", format = "graphml")
+write.graph(gUS00, "dipconUS10.graphml", format = "graphml")
