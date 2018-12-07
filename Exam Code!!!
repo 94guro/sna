@@ -93,6 +93,11 @@ write.graph(g2000, "dipcon2000.graphml", format = "graphml")
 write.graph(g2005, "dipcon2005.graphml", format = "graphml")
 write.graph(g2000, "dipcon2010.graphml", format = "graphml")
 
+#########################################################################################
+#######################  Keeping only US as sending country for ########################
+##################################   embassies   #########################################
+#########################################################################################
+
 ### Now we want to see ONLY the US, to see what country relations they had from 2000-2010
 #In order to not delete/ edit in our original dataset, we need to create a new dataframe.
 df1 <- c("abbrev1","abbrev2","dipcon2000","dipcon2005","dipcon2010")
