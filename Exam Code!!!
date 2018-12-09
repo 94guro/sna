@@ -100,13 +100,34 @@ write.graph(g2000, "dipcon2010.graphml", format = "graphml")
 
 ### Now we want to see ONLY the US, to see what country relations they had from 2000-2010
 #In order to not delete/ edit in our original dataset, we need to create a new dataframe.
-df1 <- c("abbrev1","abbrev2","dipcon2000","dipcon2005","dipcon2010")
-View(df1)
+#SLET - DET ER DET SAMME df1 <- c("abbrev1","abbrev2","dipcon2000","dipcon2005","dipcon2010")
+#SLET - DET ER DET SAMME View(df1)
 
 # Here we told the new dataframe to only have abbrev1, abbrev2, and the 3 years as columns. 
 ## Next I want to tell R how many rows of the data I want to use. 
 df1 <- df[c(2:195), c(2,4,11,12,13)]
-View(df1) 
+View(df1)
+# Now we need R to tell us which embassies "happened" and got "recalled" in the timespan of 2000-2005
+
+head(df1)
+colnames(df1) # Get column names from df
+
+## Clean datatable 
+# remove rows with NA
+nBefore = nrow(df1)
+
+df1 = na.omit(df1)
+
+nAfter = nrow(df1)
+print(nBefore - nAfter)
+
+## Create columns that calculates which embassies "happened" and "recalled" between years
+df1$ec05 = ifelse( df1$dipcon2000!=df1$dipcon2005 ,1,0) #ec05 = embassy change. 1 = change between 2000 and 2005, 0 = no change
+df1$ec10 = ifelse( df1$dipcon2005!=df1$dipcon2010 ,1,0) #ec10 = embassy change. 1 = change between 2005 and 2010, 0 = no change
+
+dftest = df1
+#If we print these two dataframe above, we will be able to see the changes with embassies only from the us perspective. We should def. write a section on this!
+
 
 ### using dplyr to keep only relations for 2000 for USA
 dfUS00 <- df1 %>% # selecting th data set
