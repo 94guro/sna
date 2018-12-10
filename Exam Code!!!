@@ -93,6 +93,19 @@ write.graph(g2000, "dipcon2000.graphml", format = "graphml")
 write.graph(g2005, "dipcon2005.graphml", format = "graphml")
 write.graph(g2000, "dipcon2010.graphml", format = "graphml")
 
+####### Trying to make a community structure in R ######
+#this should detect communities for 2000
+cluster_louvain(g2000, weights = NULL)
+
+View(cluster_louvain(g2000, weights = NULL)) #It gives me the number of communities, but it is not exactly right
+#R shows me 2 groups, whereas the US is in the last one
+#Then R tells me that it has omitted several groups. 
+
+cluster_louvain(g2005, weights = NULL) #try again for 2005
+cluster_louvain(g2010, weights = NULL) #try again for 2010
+
+##### This shows us there are four communities, which also is what we find in gephi.
+
 #########################################################################################
 #######################  Keeping only US as sending country for ########################
 ##################################   embassies   #########################################
