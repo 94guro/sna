@@ -187,7 +187,7 @@ g2000 <- simplify(g2000, remove.multiple = T, remove.loops = T) #use this functi
 
 ### running infomap community detection
 infomap.2000<- cluster_infomap(g2000, nb.trials = 10,
-                             modularity = F)
+                               modularity = F)
 
 # running modularity optimization community detection
 modularity.2000 <- cluster_louvain(g2000)
@@ -218,7 +218,7 @@ plot.igraph(g2000,
             vertex.color = modularity.2000$membership)
 
 
-### vizualising the network with communities (degree-based)
+### vizualising the network with communities (degree-based) - for 2000
 plot.igraph(g2000,
             main="Diplomatic ties in 2000 - Degree Based",
             vertex.size = 2,
@@ -230,6 +230,117 @@ plot.igraph(g2000,
 
 ## exporting to gephi
 write.graph(g2000, "dipcon2000.graphml", format = "graphml")
+
+########### Visualizing for 2005 ##########
+## Even though the graph object is stored as "undirected", some edges may appear twice (in cases where reciprocal ties are directional)
+g2005 <- simplify(g2005, remove.multiple = T, remove.loops = T) #use this function to remove multiples or self-ties 
+
+
+### running infomap community detection
+infomap.2005<- cluster_infomap(g2005, nb.trials = 10,
+                               modularity = F)
+
+# running modularity optimization community detection
+modularity.2005 <- cluster_louvain(g2005)
+
+## running Girvan and Newman's degree-based community detection
+deg_com.2005 <- cluster_edge_betweenness(g2005)
+
+### vizualising the network with communities (infomap)
+plot.igraph(g2005,
+            main ="Diplomatic ties in 2005 - infomap",
+            vertex.size = 2,
+            edge.label= NA,
+            vertex.label = df2005$value, ### adding names to the nodes,
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            vertex.color = infomap.2005$membership)
+
+### vizualising the network with communities (modularity optimisation)
+plot.igraph(g2005,
+            main="Diplomatic ties in 2005 - Modularity Optimization",
+            vertex.size = 2,
+            edge.label= NA,
+            vertex.label = df2005$value, 
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            vertex.color = modularity.2005$membership)
+
+### vizualising the network with communities (degree-based) - for 2005
+plot.igraph(g2005,
+            main="Diplomatic ties in 2005 - Degree Based",
+            vertex.size = 2,
+            vertex.label = df2005$value,
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            vertex.color = deg_com.2005$membership)
+
+## vizualising the network with communities (degree-based) - for 2005
+plot.igraph(g2005,
+            main="Diplomatic ties in 2005 - Degree Based",
+            vertex.size = 5,
+            vertex.label = df2005$value,
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            edge.color = "lightblue",
+            vertex.color = deg_com.2005$membership)
+
+
+## exporting to gephi
+write.graph(g2005, "dipcon2005.graphml", format = "graphml")
+
+
+########### Visualizing for 2010 ##########
+## Even though the graph object is stored as "undirected", some edges may appear twice (in cases where reciprocal ties are directional)
+g2010 <- simplify(g2010, remove.multiple = T, remove.loops = T) #use this function to remove multiples or self-ties 
+
+
+### running infomap community detection
+infomap.2010<- cluster_infomap(g2010, nb.trials = 10,
+                               modularity = F)
+
+# running modularity optimization community detection
+modularity.2010 <- cluster_louvain(g2010)
+
+## running Girvan and Newman's degree-based community detection
+deg_com.2010 <- cluster_edge_betweenness(g2010)
+
+
+### vizualising the network with communities (infomap)
+plot.igraph(g2010,
+            main ="Diplomatic ties in 2010 - infomap",
+            vertex.size = 2,
+            edge.label= NA,
+            vertex.label = df2010$value, ### adding names to the nodes,
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            vertex.color = infomap.2010$membership)
+
+
+### vizualising the network with communities (modularity optimisation) - for 2010
+plot.igraph(g2010,
+            main="Diplomatic ties in 2010 - Modularity Optimization",
+            vertex.size = 2,
+            edge.label= NA,
+            vertex.label = df2010$value, 
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            vertex.color = modularity.2010$membership)
+
+
+### vizualising the network with communities (degree-based) - for 2010
+plot.igraph(g2010,
+            main="Diplomatic ties in 2010 - Degree Based",
+            vertex.size = 5,
+            vertex.label = df2010$value,
+            vertex.label.color = "black",
+            vertex.label.cex = 1,
+            edge.color = "lightblue",
+            vertex.color = deg_com.2010$membership)
+
+
+## exporting to gephi
+write.graph(g2005, "dipcon2010.graphml", format = "graphml")
 
 ############################# K-Cores  ################################
 
