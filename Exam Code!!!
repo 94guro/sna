@@ -205,12 +205,12 @@ g2010 <- simplify(g2000, remove.multiple = T, remove.loops = T)
 
 ####### Making a community structure in R ######
 #this should detect communities
-cluster_louvain(g2000, weights = NULL) #for 2000 ### 
+cluster_louvain(g2000, weights = NULL) #for 2000
 cluster_louvain(g2005, weights = NULL) #for 2005
 cluster_louvain(g2010, weights = NULL) #for 2010
 
 View(cluster_louvain(g2000, weights = NULL)) #for 2000. Result: 4 clusters 
-View(cluster_louvain(g2005, weights = NULL)) #for 2005. Result: 5 clusters
+View(cluster_louvain(g2005, weights = NULL)) #for 2005. Result: 4 clusters
 View(cluster_louvain(g2010, weights = NULL)) #for 2010. Result: 4 clusters
 
 ##### This shows us there are four communities, which also is what we find in gephi.
@@ -505,7 +505,7 @@ k10 <- delete.vertices(g2000, exclude)
 plot(k10,
      main="k-10 core",
      vertex.size = 20,
-     vertex.label = V(k15)$Kcore,
+     vertex.label = V(k10)$Kcore,
      vertex.label.color = "black",
      vertex.label.cex = 1,
      vertex.color = "white")
@@ -523,7 +523,7 @@ plot(k10,
 ############ NB2: Is it possible to change the colours of the different degrees?
 
 
-write.graph(k38, "DIPCON_k38.graphml", format = "graphml")
+write.graph(k10, "DIPCON_k38.graphml", format = "graphml")
 
 
 
