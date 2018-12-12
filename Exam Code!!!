@@ -281,6 +281,35 @@ graph.density(gUS00)
 graph.density(gUS05)
 graph.density(gUS10)
 
+#########################################################################################
+#######################  Keeping only US as receiving country for ########################
+##################################   embassies   #########################################
+#########################################################################################
+
+### Selecting the data
+df2 <- subset(df, ccode2=="2", ### choosing to only select the data linked to the country code 2 (US) in the dataset
+                  select=ccode1:dipcon2010) ### keeping all columns
+
+# Now we need R to tell us which embassies "happened" and got "recalled" in the timespan of 2000-2005
+head(df2)
+colnames(df2) # Get column names from df
+
+## Clean datatable 
+# remove rows with NA
+nBefore = nrow(df2)
+
+df2 = na.omit(df2)
+
+nAfter = nrow(df2)
+print(nBefore - nAfter)
+
+## Create columns that calculates which embassies "happened" and "recalled" between years
+df2$ec05 = ifelse( df2$dipcon2000!=df2$dipcon2005 ,1,0) #ec05 = embassy change. 1 = change between 2000 and 2005, 0 = no change
+df2$ec10 = ifelse( df2$dipcon2005!=df2$dipcon2010 ,1,0) #ec10 = embassy change. 1 = change between 2005 and 2010, 0 = no change
+
+write.csv(df2, "df2.csv") ### to export to excel to get a better overview
+
+
 ###########################################################################
 #############  Detecting communities ######################################
 ###########################################################################
