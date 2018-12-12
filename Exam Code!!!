@@ -146,6 +146,60 @@ df.g00 <- df.g00 %>% arrange(-indegree)
 ### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
 head(df.g00, 10)
 
+####### outdegree ranking ###############
+########## Ranking countries by outdegree - 2010
+df10 <- df %>% filter(dipcon2010 > 0) %>% select(abbrev1, abbrev2)
+
+## creating a graph object
+g.out10 <- graph.data.frame(df10, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.out10 <- data.frame(country = V(g.out10)$name,
+                      degree_norm = degree(g.out10, mode = "out", normalized = T), #normalized out-degree
+                     degree = degree(g.out10, mode = "out", normalized = F )) # raw outdegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.out10 <- df.out10 %>% arrange(-degree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.out10, 10)
+
+
+########## Ranking countries by outdegree - 2005
+df05 <- df %>% filter(dipcon2005 > 0) %>% select(abbrev1, abbrev2)
+
+## creating a graph object
+g.out05 <- graph.data.frame(df05, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.out05 <- data.frame(country = V(g.out05)$name,
+                       degree_norm = degree(g.out05, mode = "out", normalized = T), #normalized out-degree
+                       degree = degree(g.out05, mode = "out", normalized = F )) # raw outdegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.out05 <- df.out05 %>% arrange(-degree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.out05, 10)
+
+
+########## Ranking countries by outdegree - 2000
+df00 <- df %>% filter(dipcon2000 > 0) %>% select(abbrev1, abbrev2)
+
+## creating a graph object
+g.out00 <- graph.data.frame(df00, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.out00 <- data.frame(country = V(g.out00)$name,
+                       degree_norm = degree(g.out00, mode = "out", normalized = T), #normalized out-degree
+                       degree = degree(g.out00, mode = "out", normalized = F )) # raw outdegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.out00 <- df.out00 %>% arrange(-degree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.out00, 10)
+
 
 ####### Trying to make a community structure in R ######
 #this should detect communities for 2000
