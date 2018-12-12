@@ -41,6 +41,18 @@ df2010 <- df %>% # selecting th data set
   filter(dipcon2010 > 0) %>% # keeping only the connections in 2010
   select(abbrev1, abbrev2) # selecting the variables
   
+## We also want to remove the NA from df, since we are only interested in 0/1 relations (embassy or no embassy)
+## Clean datatable 
+# remove rows with NA
+nBefore = nrow(df1)
+
+df1 = na.omit(df1)
+
+nAfter = nrow(df1)
+print(nBefore - nAfter)
+
+### Now NA's are removed. 
+  
 #Turning into a graph object
 g2000 <- graph.data.frame(df2000, directed = F) # storing the graph as "undirected" for the sake of simplicity
 g2005 <- graph.data.frame(df2005, directed = F) # storing the graph as "undirected" for the sake of simplicity
