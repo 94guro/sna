@@ -572,3 +572,17 @@ plot.igraph(gUS10,
 write.graph(gUS00, "dipconUS00.graphml", format = "graphml")
 write.graph(gUS05, "dipconUS05.graphml", format = "graphml")
 write.graph(gUS00, "dipconUS10.graphml", format = "graphml")
+
+
+######### Calculating Average Clustering Coefficient #######
+transitivity(g2000, type = c("undirected", "global", "globalundirected",
+                             "localundirected", "local", "average", "localaverage",
+                             "localaverageundirected", "barrat", "weighted"), vids = NULL,
+             weights = NULL, isolates = c("NaN", "zero"))
+
+# Global clustering coefficient
+transitivity(g2000)
+# Average clustering coefficient
+transitivity(g2010, type = "average")
+# The same as above
+mean(transitivity(g2010, type = "local"), na.rm = TRUE)
