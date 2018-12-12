@@ -2,7 +2,7 @@
 rm(list = ls())
 
 ### setting the working directory
-setwd("C:/Users/Guro/Google Drive/MSc Security Risk Management/3rd Semester/SNA/R") ### for Guro
+setwd("C:/Users/Guro/Google Drive/MSc Security Risk Management/3rd Semester/SNA/R") ### for Microsoft
 
 ## Setting the working directory (in Mac)
 ### setting the working directory
@@ -51,7 +51,6 @@ mean(degree(g2000))
 mean(degree(g2005))
 mean(degree(g2010))
 
-
 ### What is the density?
 graph.density(g2000)
 graph.density(g2005)
@@ -92,6 +91,61 @@ plot.igraph(g2010,
 write.graph(g2000, "dipcon2000.graphml", format = "graphml")
 write.graph(g2005, "dipcon2005.graphml", format = "graphml")
 write.graph(g2000, "dipcon2010.graphml", format = "graphml")
+
+###################### indegree ranking #####################
+
+##### Ranking countries by indegree - 2010
+df10 <- df %>% filter(dipcon2010 > 0) %>% select(abbrev1, abbrev2)
+
+## creating a graph object
+g <- graph.data.frame(df10, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.g10 <- data.frame(country = V(g)$name,
+                   indegree_norm = degree(g, mode = "in", normalized = T), #normalized indegree
+                   indegree = degree(g, mode = "in", normalized = F )) # raw indegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.g10 <- df.g10 %>% arrange(-indegree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.g10, 10)
+
+###### Ranking countries by indegree - 2005
+df05 <- df %>% filter(dipcon2005 > 0) %>% select(abbrev1, abbrev2)
+
+## creating a graph object
+g <- graph.data.frame(df05, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.g05 <- data.frame(country = V(g)$name,
+                     indegree_norm = degree(g, mode = "in", normalized = T), #normalized indegree
+                     indegree = degree(g, mode = "in", normalized = F )) # raw indegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.g05 <- df.g05 %>% arrange(-indegree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.g05, 10)
+
+
+###### Ranking countries by indegree - 2000
+df00 <- df %>% filter(dipcon2000 > 0) %>% select(abbrev1, abbrev2)
+
+## creating a graph object
+g <- graph.data.frame(df00, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.g00 <- data.frame(country = V(g)$name,
+                     indegree_norm = degree(g, mode = "in", normalized = T), #normalized indegree
+                     indegree = degree(g, mode = "in", normalized = F )) # raw indegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.g00 <- df.g00 %>% arrange(-indegree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.g00, 10)
+
 
 ####### Trying to make a community structure in R ######
 #this should detect communities for 2000
