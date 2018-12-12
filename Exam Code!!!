@@ -5,7 +5,6 @@ rm(list = ls())
 setwd("C:/Users/Guro/Google Drive/MSc Security Risk Management/3rd Semester/SNA/R") ### for Microsoft
 
 ## Setting the working directory (in Mac)
-### setting the working directory
 setwd("~/Desktop/DIPCON")
 
 ### install packages for graph illustrations and 
@@ -46,18 +45,18 @@ g2000 <- graph.data.frame(df2000, directed = F) # storing the graph as "undirect
 g2005 <- graph.data.frame(df2005, directed = F) # storing the graph as "undirected" for the sake of simplicity
 g2010 <- graph.data.frame(df2010, directed = F) # storing the graph as "undirected" for the sake of simplicity
 
-### how many diplomatic ties does a country have on average in 2010
-mean(degree(g2000))
-mean(degree(g2005))
-mean(degree(g2010))
+### how many diplomatic ties does a country have on average?
+mean(degree(g2000)) ## in 2000
+mean(degree(g2005)) ## in 2005
+mean(degree(g2010)) ## in 2010
 
 ### What is the density?
-graph.density(g2000)
-graph.density(g2005)
-graph.density(g2010)
+graph.density(g2000) ## in 2000
+graph.density(g2005) ## in 2005
+graph.density(g2010) ## in 2010
 
 #### Plotting the graphs: 2000
-plot.igraph(g2000, 
+plot.igraph(g2000, ### selecting graph objet to plot
             vertex.color = 'lightblue', ### colour of node
             edge.label=df2000$value, ### adding names to the nodes
             vertex.size=5, ### size of node
@@ -67,7 +66,7 @@ plot.igraph(g2000,
             main='Diplomatic relations between states - 2000') ### Heading of graph
 
 ### Plotting the graphs: 2005
-plot.igraph(g2005, 
+plot.igraph(g2005, ### selecting graph objet to plot
             vertex.color = 'lightblue', ### colour of node
             edge.label=df2005$value, ### adding names to the nodes
             vertex.size=5, ### size of node
@@ -77,7 +76,7 @@ plot.igraph(g2005,
             main='Diplomatic relations between states - 2005') ### Heading of graph
 
 ### Plotting the graphs: 2010
-plot.igraph(g2010, 
+plot.igraph(g2010, ### selecting graph objet to plot
             vertex.color = 'lightblue', ### colour of node
             edge.label=df2010$value, ### adding names to the nodes
             vertex.size=5, ### size of node
@@ -95,10 +94,10 @@ write.graph(g2000, "dipcon2010.graphml", format = "graphml")
 ###################### indegree ranking #####################
 
 ##### Ranking countries by indegree - 2010
-df10 <- df %>% filter(dipcon2010 > 0) %>% select(abbrev1, abbrev2)
+df10 <- df %>% filter(dipcon2010 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2010
 
 ## creating a graph object
-g <- graph.data.frame(df10, directed = T)
+g <- graph.data.frame(df10, directed = T)  ### creating a graph object
 
 ### creating a data frame where columns represent variables and rows represent countires
 df.g10 <- data.frame(country = V(g)$name,
@@ -112,7 +111,7 @@ df.g10 <- df.g10 %>% arrange(-indegree)
 head(df.g10, 10)
 
 ###### Ranking countries by indegree - 2005
-df05 <- df %>% filter(dipcon2005 > 0) %>% select(abbrev1, abbrev2)
+df05 <- df %>% filter(dipcon2005 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2005
 
 ## creating a graph object
 g <- graph.data.frame(df05, directed = T)
@@ -128,9 +127,8 @@ df.g05 <- df.g05 %>% arrange(-indegree)
 ### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
 head(df.g05, 10)
 
-
 ###### Ranking countries by indegree - 2000
-df00 <- df %>% filter(dipcon2000 > 0) %>% select(abbrev1, abbrev2)
+df00 <- df %>% filter(dipcon2000 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2000
 
 ## creating a graph object
 g <- graph.data.frame(df00, directed = T)
@@ -146,9 +144,9 @@ df.g00 <- df.g00 %>% arrange(-indegree)
 ### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
 head(df.g00, 10)
 
-####### outdegree ranking ###############
+################# outdegree ranking ###############
 ########## Ranking countries by outdegree - 2010
-df10 <- df %>% filter(dipcon2010 > 0) %>% select(abbrev1, abbrev2)
+df10 <- df %>% filter(dipcon2010 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2010
 
 ## creating a graph object
 g.out10 <- graph.data.frame(df10, directed = T)
@@ -166,7 +164,7 @@ head(df.out10, 10)
 
 
 ########## Ranking countries by outdegree - 2005
-df05 <- df %>% filter(dipcon2005 > 0) %>% select(abbrev1, abbrev2)
+df05 <- df %>% filter(dipcon2005 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2005
 
 ## creating a graph object
 g.out05 <- graph.data.frame(df05, directed = T)
@@ -184,7 +182,7 @@ head(df.out05, 10)
 
 
 ########## Ranking countries by outdegree - 2000
-df00 <- df %>% filter(dipcon2000 > 0) %>% select(abbrev1, abbrev2)
+df00 <- df %>% filter(dipcon2000 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2000
 
 ## creating a graph object
 g.out00 <- graph.data.frame(df00, directed = T)
@@ -201,16 +199,18 @@ df.out00 <- df.out00 %>% arrange(-degree)
 head(df.out00, 10)
 
 
-####### Trying to make a community structure in R ######
-#this should detect communities for 2000
-cluster_louvain(g2000, weights = NULL)
+####### Making a community structure in R ######
+#this should detect communities
+cluster_louvain(g2000, weights = NULL) #for 2000
+cluster_louvain(g2005, weights = NULL) #for 2005
+cluster_louvain(g2010, weights = NULL) #for 2010
 
-View(cluster_louvain(g2000, weights = NULL)) #It gives me the number of communities, but it is not exactly right
+View(cluster_louvain(g2000, weights = NULL)) #for 2000
+View(cluster_louvain(g2005, weights = NULL)) #for 2005
+View(cluster_louvain(g2010, weights = NULL)) #for 2010
+#It gives me the number of communities, but it is not exactly right
 #R shows me 2 groups, whereas the US is in the last one
 #Then R tells me that it has omitted several groups. 
-
-cluster_louvain(g2005, weights = NULL) #try again for 2005
-cluster_louvain(g2010, weights = NULL) #try again for 2010
 
 ##### This shows us there are four communities, which also is what we find in gephi.
 
