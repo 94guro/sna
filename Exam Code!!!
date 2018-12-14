@@ -227,8 +227,6 @@ View(cluster_louvain(g2010, weights = NULL)) #for 2010. Result: 4 clusters
 
 ### Now we want to see ONLY the US, to see what country relations they had from 2000-2010
 #In order to not delete/ edit in our original dataset, we need to create a new dataframe.
-#SLET - DET ER DET SAMME df1 <- c("abbrev1","abbrev2","dipcon2000","dipcon2005","dipcon2010")
-#SLET - DET ER DET SAMME View(df1)
 
 # Here we told the new dataframe to only have abbrev1, abbrev2, and the 3 years as columns. 
 ## Next I want to tell R how many rows of the data I want to use. 
@@ -255,7 +253,6 @@ df1$ec10 = ifelse( df1$dipcon2005!=df1$dipcon2010 ,1,0) #ec10 = embassy change. 
 dftest = df1
 #If we print these two dataframe above, we will be able to see the changes with embassies only from the us perspective. We should def. write a section on this!
 
-
 ### using dplyr to keep only relations for 2000 for USA
 dfUS00 <- df1 %>% # selecting th data set
   filter(dipcon2000 > 0) %>% # keeping only the connections in 2000
@@ -280,7 +277,6 @@ gUS10 <- graph.data.frame(dfUS10, directed = F) # storing the graph as "undirect
 mean(degree(gUS00))
 mean(degree(gUS05))
 mean(degree(gUS10))
-
 
 ### What is the density?
 graph.density(gUS00)
@@ -319,10 +315,6 @@ write.csv(df2, "df2.csv") ### to export to excel to get a better overview
 ###########################################################################
 #############  Detecting communities ######################################
 ###########################################################################
-
-
-#### PROBLEM: How to export to gephi while showing the communities and the labels of the countries.
-
 
 ## Even though the graph object is sstored as "undirected", some edges may appear twice (in cases where reciprocal ties are directional)
 g2000 <- simplify(g2000, remove.multiple = T, remove.loops = T) #use this function to remove multiples or self-ties 
@@ -369,7 +361,6 @@ plot.igraph(g2000,
             vertex.label.color = "black",
             vertex.label.cex = 1,
             vertex.color = deg_com.2000$membership)
-
 
 ## exporting to gephi
 write.graph(g2000, "dipcon2000.graphml", format = "graphml")
@@ -428,10 +419,8 @@ plot.igraph(g2005,
             edge.color = "lightblue",
             vertex.color = deg_com.2005$membership)
 
-
 ## exporting to gephi
 write.graph(g2005, "dipcon2005.graphml", format = "graphml")
-
 
 ########### Visualizing for 2010 ##########
 ## Even though the graph object is stored as "undirected", some edges may appear twice (in cases where reciprocal ties are directional)
@@ -448,7 +437,6 @@ modularity.2010 <- cluster_louvain(g2010)
 ## running Girvan and Newman's degree-based community detection
 deg_com.2010 <- cluster_edge_betweenness(g2010)
 
-
 ### vizualising the network with communities (infomap)
 plot.igraph(g2010,
             main ="Diplomatic ties in 2010 - infomap",
@@ -458,7 +446,6 @@ plot.igraph(g2010,
             vertex.label.color = "black",
             vertex.label.cex = 1,
             vertex.color = infomap.2010$membership)
-
 
 ### vizualising the network with communities (modularity optimisation) - for 2010
 plot.igraph(g2010,
@@ -470,7 +457,6 @@ plot.igraph(g2010,
             vertex.label.cex = 1,
             vertex.color = modularity.2010$membership)
 
-
 ### vizualising the network with communities (degree-based) - for 2010
 plot.igraph(g2010,
             main="Diplomatic ties in 2010 - Degree Based",
@@ -480,7 +466,6 @@ plot.igraph(g2010,
             vertex.label.cex = 1,
             edge.color = "lightblue",
             vertex.color = deg_com.2010$membership)
-
 
 ## exporting to gephi
 write.graph(g2005, "dipcon2010.graphml", format = "graphml")
@@ -578,10 +563,3 @@ transitivity(g2000, type = c("undirected", "global", "globalundirected",
                              "localundirected", "local", "average", "localaverage",
                              "localaverageundirected", "barrat", "weighted"), vids = NULL,
              weights = NULL, isolates = c("NaN", "zero"))
-
-# Global clustering coefficient
-transitivity(g2000)
-# Average clustering coefficient
-transitivity(g2010, type = "average")
-# The same as above
-mean(transitivity(g2010, type = "local"), na.rm = TRUE)
