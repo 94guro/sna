@@ -149,6 +149,62 @@ df.g00 <- df.g00 %>% arrange(-indegree)
 ### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
 head(df.g00, 10)
 
+
+
+########### Controlling for false positives for indegree ranking ######
+###### Ranking countries by indegree - 1990
+df90 <- df %>% filter(dipcon1990 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2000
+
+## creating a graph object
+g90 <- graph.data.frame(df90, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.g90 <- data.frame(country = V(g90)$name,
+                     indegree_norm = degree(g90, mode = "in", normalized = T), #normalized indegree
+                     indegree = degree(g90, mode = "in", normalized = F )) # raw indegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.g90 <- df.g90 %>% arrange(-indegree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.g90, 10)
+
+###### Ranking countries by indegree - 1995
+df95 <- df %>% filter(dipcon1995 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2000
+
+## creating a graph object
+g95 <- graph.data.frame(df95, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.g95 <- data.frame(country = V(g95)$name,
+                     indegree_norm = degree(g95, mode = "in", normalized = T), #normalized indegree
+                     indegree = degree(g95, mode = "in", normalized = F )) # raw indegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.g95 <- df.g95 %>% arrange(-indegree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.g95, 10)
+
+###### Ranking countries by indegree - 1985
+df85 <- df %>% filter(dipcon1985 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2000
+
+## creating a graph object
+g85 <- graph.data.frame(df85, directed = T)
+
+### creating a data frame where columns represent variables and rows represent countires
+df.g85 <- data.frame(country = V(g85)$name,
+                     indegree_norm = degree(g85, mode = "in", normalized = T), #normalized indegree
+                     indegree = degree(g85, mode = "in", normalized = F )) # raw indegree
+
+# ranking the countries by raw (non-normalized) indegree in descending order
+df.g85 <- df.g85 %>% arrange(-indegree)
+
+### examining the first 10 rows (top 10 countries ranked by (non-normalized) indegree)
+head(df.g85, 10)
+
+
+
 ################# outdegree ranking ###############
 ########## Ranking countries by outdegree - 2010
 df10 <- df %>% filter(dipcon2010 > 0) %>% select(abbrev1, abbrev2) ### creating a dataframe for 2010
